@@ -1,0 +1,60 @@
+swagger: "2.0"
+info:
+  description: Swagger for Generate Document
+  version: "1.0.0"
+  title: Generate Documents 
+consumes:
+  - application/json
+
+basePath: /
+
+paths:
+  /v1/ping:
+    get:
+      tags:
+      - "API_Check"
+      summary: "ping pong application"
+      description: "ping pong check"
+      operationId: routes.ping
+      responses:
+        500:
+          description: Server error
+        200:
+          description: Ping Successful
+          schema:
+            type: string
+
+  /v1/create_document:
+    get:
+      tags:
+        - "Create Documents"
+      summary: "Create Documents"
+      description: "Create Documents in Bulk"
+      operationId: routes.create_Documents
+      responses:
+        500:
+          description: Server error
+        200:
+          description: Documents Created Successfully
+          schema:
+            type: string
+
+  /v1/fetch_document/{id}:
+    get:
+      tags:
+        - "Fetch Documents"
+      summary: "Fetch Document"
+      description: "Fetch Document"
+      operationId: routes.fetch_document
+      parameters:
+        - name: id
+          in: path
+          type: string
+          required: True
+      responses:
+        500:
+          description: Server error
+        200:
+          description: Documents Created Successfully
+          schema:
+            type: string
