@@ -7,13 +7,13 @@ i.e. The user can create documents as per requirements
 
 ## Tech stack :
 
-> Programming Language : Python3
+>> Programming Language : Python3
 
-> Framework : Flask
+>> Framework : Flask
 
-> Storage : File storage ( Can be switched to database with modifications )
+>> Storage : File storage ( Can be switched to database with modifications )
 
-> Python Packages used : flask, connexion, pandas, docxtpl, docx2pdf, zipfile
+>> Python Packages used : flask, connexion, pandas, docxtpl, docx2pdf, zipfile
 
 
 
