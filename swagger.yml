@@ -24,17 +24,18 @@ paths:
           schema:
             type: string
 
+
   /v1/create_documents:
     post:
       tags:
         - "Upload Documents"
-      summary: Uploads a file.
+      summary: "Uploads a file."
       description: "This Api is used to create the Documents dynamically"
-      operationId: routes.create_doc
+      operationId: "routes.create_doc"
       consumes:
-        - multipart/form-data
+        - "multipart/form-data"    
       produces:
-        - application/zip
+        - "application/zip"
       parameters:
         - in: formData
           name: Template
@@ -49,6 +50,7 @@ paths:
       responses:
         500:
           description: Error while sending the file
+
 
   /v1/download/template_guide:
     get:

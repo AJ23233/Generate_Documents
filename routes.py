@@ -1,8 +1,12 @@
 # -*- coding: utf-8 -*-
+# Filename: routes.py
+# Description: This file contains all the application routes
+# Author: Ajay Vanara
 
 import connexion
 from flask import request, jsonify, send_from_directory, send_file, render_template
-from Operations.generate_doc import Genreate_doc
+from Operations.document_ops import Genreate_doc
+from io import BytesIO
 
 APP = connexion.App(__name__, specification_dir='./')
 
@@ -24,17 +28,23 @@ def ping():
 @APP.route("/v1/create_documents", methods=['POST', 'GET'])
 def create_doc():
     try:
-        Template = request.files['Template']
-        Data = request.files['Data']
-        response = Doc_obj.Create_docs(Template, Data)
+        template = request.files['Template']
+        data = request.files['Data']
+        res_format = request.form.get("format")
+        response = Doc_obj.Create_docs(template, data, res_format)
+        
         if 'Error' in response:
             raise Exception(response)
-        return send_file(response, mimetype='application/zip', attachment_filename="files.zip", as_attachment=True)
+        res = send_file(response, 
+                         mimetype="application/zip",
+                         attachment_filename='Generated_PDFs.zip',
+                         as_attachment=True)
+        return res
     except Exception as ex:
         print("Error while creating documents is : {}".format(str(ex)))
         return "Error while creating documents"
-    # finally:
-    #     Doc_obj.remove_docs()
+    finally:
+        Doc_obj.remove_docs()
 
         
 

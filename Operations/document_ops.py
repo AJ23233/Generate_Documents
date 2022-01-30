@@ -1,5 +1,6 @@
+# Filename: document_ops.py
+# Description: This file contains all the operations that needs to be perform on the documents
 # Author: Ajay Vanara
-
 
 import io
 import os
@@ -11,24 +12,29 @@ import zipfile
 
 # imports from other directories 
 from utils.utility import data_proccessing, clear_data
+from config import CONF
 
 class Genreate_doc:
   """
   This class Contains the operations to generate the documents 
   """
   def __init__(self):
-    self.template_doc = os.path.join(os.path.dirname(os.path.dirname
-                        (os.path.abspath(__file__))),"Doc_Templates")
-    self.Output = os.path.join(os.path.dirname(self.template_doc), 'Output')
-    self.pdfs = os.path.join(os.path.dirname(self.template_doc), "pdf")
+    self.template_doc = os.path.join(os.path.dirname
+                        (os.path.dirname(os.path.abspath(__file__))),
+                        CONF['directory']['templates'])
+    self.docs = os.path.join(os.path.dirname(
+                self.template_doc), CONF['directory']['doc'])
+    self.pdfs = os.path.join(os.path.dirname(
+                self.template_doc), CONF['directory']['pdf'])
 
 
   def data_procesing(self,path):
     """
-    This method is used to fetched data as per the requirements
+    This method is used to fetch data 
     """
     try:
       data = pd.read_excel(path)
+
     except Exception as ex:
       print("Error while processing the data {}".format(str(ex)))
       data = None
@@ -44,33 +50,35 @@ class Genreate_doc:
       context= row.to_dict()
       doc.render(context)
       name = doc_name or row.index[0]
-      path = os.path.join(self.Output, str(row[name])+'.docx')
+      path = os.path.join(self.docs, str(row[name])+'.docx')
       doc.save(path)
       print("{}.docx  saved successfully".format(str(row[name])))
     except Exception as ex:
       print("Error while generating the document {}".format(str(ex)))
 
 
-  def Create_docs(self, docx, data):
+  def Create_docs(self, docx, data, format):
     """
     This Method is used to create documents
     """
     try:
       # creates word dcuments from dataframe
       data_df = data_proccessing(data)
-      if not os.path.exists(self.Output):
-        os.mkdir(self.Output)
+      if not os.path.exists(self.docs):
+        os.mkdir(self.docs)
 
       data_df.apply(self.generate_docs, docx=docx, axis=1)
 
+      res_files = self.docs
       # creates pdfs from word docs 
-      pdf_files  = self.generate_pdfs()
+      if format == 'pdf':
+        res_files  = self.generate_pdfs()
 
-      zipped_file = Genreate_doc.zipdir(pdf_files)
+      zipped_file = self.zipdir(res_files)
       if zipped_file:
         print("zipped documents successfully")
         return zipped_file
-      return "Error while creating documents"
+      raise Exception("Zipped file not found")
     except Exception as ex:
       print("Error while creating doc : {}".format(str(ex)))
       return "Error while creating the document"
@@ -83,32 +91,28 @@ class Genreate_doc:
     try:
       if not os.path.exists(self.pdfs):
         os.mkdir(self.pdfs)
-      os.system(f"docx2pdf {self.Output} {self.pdfs}")
+      os.system(f"docx2pdf {self.docs} {self.pdfs}")
 
       print("PDF Documents Created successfully")
       return self.pdfs
     except Exception as ex:
       print("Error while creating pdf is :{}".format(str(ex)))
-      return self.Output
+      return self.docs
 
 
-  @staticmethod
-  def zipdir(path):
+  def zipdir(self, path):
     """
     Method to zip the documents 
     """
     try:
-      import pdb; pdb.set_trace()
-      res = io.BytesIO()
-      with zipfile.ZipFile(res, mode='w') as ziph:
+      with zipfile.ZipFile(CONF['file_names']['zip'], mode='w') as ziph:
         for root, dirs, files in os.walk(path):
           for file in files:
-              ziph.write(os.path.join(root, file), os.path.basename(file))
-      res.seek(0)
+              ziph.write(os.path.relpath(os.path.join(root, file)))
     except Exception as ex:
       print("Error while zipping the files : {}".format(str(ex)))
       res = None
-    return res
+    return os.path.join(os.path.dirname(self.pdfs), CONF['file_names']['zip'])
 
 
   def download_template(self):
@@ -116,7 +120,7 @@ class Genreate_doc:
     Method to download the template document
     """
     try:
-      file_name = 'Template_Guide.docx'
+      file_name = CONF['file_names']['template_guide']
       file_path = os.path.join(self.template_doc, 'Docs', file_name)
       return send_file(file_path, attachment_filename=file_name, as_attachment=True)
     except Exception as ex:
@@ -125,6 +129,10 @@ class Genreate_doc:
 
 
   def remove_docs(self):
-    clear_data(self.Output)
+    """
+    Method to remove documents
+    """
+    clear_data(self.docs)
     clear_data(self.pdfs)
+    clear_data(os.path.join(os.path.dirname(self.pdfs), CONF['file_names']['zip']))
     print("successfully removed docs")
