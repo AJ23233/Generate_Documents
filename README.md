@@ -17,6 +17,15 @@ i.e. The user can create documents in bulk as per requirements
 > Storage : File storage ( Can be switched to database with modifications )
 
 > Python Packages used : flask, connexion, pandas, docxtpl, docx2pdf, zipfile
+
+<br>
+Here are the some steps for user to follow :
+
+1. download the template using an API 
+2. Create his own template as per the requirement
+3. prepare the data in excel format 
+4. upload the template and data to download the documents 
+
 <br>
 Just like we know **"Every coin has 2 sides"** this project also has some advantages and disadvantages which are also highlighted below 
 
