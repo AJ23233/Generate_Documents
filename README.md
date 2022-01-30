@@ -3,7 +3,7 @@ This repository focuses on automating creation of commonly used document, which 
 i.e. The user can create documents in bulk as per requirements
 
 ## Pre-Requisites :
-> The user needs to create his own template using the guide, Which can be dowloaded using the API
+> The user needs to create his customized template using the guide, Which can be dowloaded using the API
 
 > OS should be Windows having Python3 installed
 
@@ -22,7 +22,7 @@ i.e. The user can create documents in bulk as per requirements
 Here are the some steps for user to follow :
 
 1. download the template using an API 
-2. Create his own template as per the requirement
+2. Create his customized template as per the requirement
 3. prepare the data in excel format 
 4. upload the template and data to download the documents 
 
@@ -41,4 +41,4 @@ Just like we know **"Every coin has 2 sides"** this project also has some advant
 
 1. Does not handle missing data as it focuses only on document creation 
 2. requires windows operating system
-3. User needs to create his own template 
+3. User needs to create his customized template 
