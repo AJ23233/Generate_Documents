@@ -5,8 +5,10 @@
 
 import connexion
 from flask import request, jsonify, send_from_directory, send_file, render_template
-from Operations.document_ops import Genreate_doc
 from io import BytesIO
+
+from Operations.document_ops import Genreate_doc
+from config import CONF
 
 APP = connexion.App(__name__, specification_dir='./')
 
@@ -37,7 +39,7 @@ def create_doc():
             raise Exception(response)
         res = send_file(response, 
                          mimetype="application/zip",
-                         attachment_filename='Generated_PDFs.zip',
+                         attachment_filename=CONF['file_names']['zip'],
                          as_attachment=True)
         return res
     except Exception as ex:
