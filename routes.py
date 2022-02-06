@@ -45,8 +45,7 @@ def create_doc():
     except Exception as ex:
         print("Error while creating documents is : {}".format(str(ex)))
         return "Error while creating documents"
-    finally:
-        Doc_obj.remove_docs()
+
 
         
 

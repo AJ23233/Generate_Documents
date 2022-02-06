@@ -9,6 +9,7 @@ from docxtpl import DocxTemplate
 import pandas as pd
 from docx2pdf import convert  
 import zipfile
+from sys import platform
 
 # imports from other directories 
 from utils.utility import data_proccessing, clear_data
@@ -27,12 +28,12 @@ class Genreate_doc:
     self.pdfs = os.path.join(os.path.dirname(
                 self.template_doc), CONF['directory']['pdf'])
 
-
   def data_procesing(self,path):
     """
     This method is used to fetch data 
     """
     try:
+      
       data = pd.read_excel(path)
 
     except Exception as ex:
@@ -91,7 +92,11 @@ class Genreate_doc:
     try:
       if not os.path.exists(self.pdfs):
         os.mkdir(self.pdfs)
-      os.system(f"docx2pdf {self.docs} {self.pdfs}")
+
+      if platform == 'linux':
+        os.system(f"libreoffice --headless --convert-to pdf {self.docs}/*.docx --outdir {os.path.relpath(self.pdfs)}")
+      else:
+        os.system(f"docx2pdf {self.docs} {self.pdfs}")
 
       print("PDF Documents Created successfully")
       return self.pdfs
