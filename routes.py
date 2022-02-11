@@ -7,12 +7,12 @@ import connexion
 from flask import request, jsonify, send_from_directory, send_file, render_template
 from io import BytesIO
 
-from Operations.document_ops import Genreate_doc
+from Operations.Operation_manager import OperationManager
 from config import CONF
 
 APP = connexion.App(__name__, specification_dir='./')
 
-Doc_obj = Genreate_doc()
+Ops_mng = OperationManager()
 
 
 @APP.route("/v1/ping")
@@ -27,28 +27,6 @@ def ping():
     return jsonify({"data":"Pong"})
 
 
-@APP.route("/v1/create_documents", methods=['POST', 'GET'])
-def create_doc():
-    try:
-        template = request.files['Template']
-        data = request.files['Data']
-        res_format = request.form.get("format")
-        response = Doc_obj.Create_docs(template, data, res_format)
-        
-        if 'Error' in response:
-            raise Exception(response)
-        res = send_file(response, 
-                         mimetype="application/zip",
-                         attachment_filename=CONF['file_names']['zip'],
-                         as_attachment=True)
-        return res
-    except Exception as ex:
-        print("Error while creating documents is : {}".format(str(ex)))
-        return "Error while creating documents"
-
-
-        
-
 @APP.route("/", methods=['GET'])
 def test():
     return render_template("./download.html")
@@ -57,7 +35,39 @@ def test():
 @APP.route("/v1/download/template_guide", methods=['GET'])
 def download_template():
     
-    response = Doc_obj.download_template()
+    # response = Doc_obj.download_template()
+    response = Ops_mng.execute_operation("document", "download_template")
     if response:
         return response
     return "Error while downloading the template"
+
+
+@APP.route("/v1/create_documents", methods=['POST'])
+def create_doc():
+    try:
+        template = request.files['Template']
+        data = request.files['Data']
+        res_format = request.form.get("format")
+        response = Ops_mng.execute_operation("document", "Create_docs",
+                                             (template, data, res_format))
+        return response
+    except Exception as ex:
+        print("Error while creating documents is : {}".format(str(ex)))
+        return "Error while creating documents"
+
+
+@APP.route("/v1/query-documents", methods=['POST', 'GET'])
+def query_doc():
+    try:
+        template = request.files['Template']
+        data = request.args['Data']
+        res_format = request.form.get("format")
+        response = Ops_mng.execute_operation("document", "Create_docs",
+                                             (template, data, res_format))
+
+        if 'Error' in response:
+            raise Exception(response)
+        return response
+    except Exception as ex:
+        print("Error while creating query documents is : {}".format(str(ex)))
+        return "Error while creating documents using query"

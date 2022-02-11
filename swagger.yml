@@ -25,11 +25,23 @@ paths:
             type: string
 
 
+  /v1/download/template_guide:
+    get:
+      tags:
+        - "Template Guide"
+      summary: "Download template guide"
+      description: "Download template guide"
+      operationId: routes.download_template
+      responses:
+        500:
+          description:  Error while creating the file
+
+
   /v1/create_documents:
     post:
       tags:
-        - "Upload Documents"
-      summary: "Uploads a file."
+        - "Generate Documents"
+      summary: "Generates documents."
       description: "This Api is used to create the Documents dynamically"
       operationId: "routes.create_doc"
       consumes:
@@ -51,14 +63,29 @@ paths:
         500:
           description: Error while sending the file
 
-
-  /v1/download/template_guide:
-    get:
+  /v1/query-documents:
+    post:
       tags:
-        - "Template Guide"
-      summary: "Download template guide"
-      description: "Download template guide"
-      operationId: routes.download_template
+        - "Generate Documents"
+      summary: "Generates documents using query"
+      description: "This Api is used to create the Documents using query"
+      operationId: "routes.query_doc"
+      consumes:
+        - "multipart/form-data"    
+      produces:
+        - "application/zip"
+      parameters:
+        - in: formData
+          name: Template
+          type: file
+          description: The template to upload (.docx file)
+          required: true
+        - in: query
+          name: Data
+          type: string
+          description: The Database query to be used
+          required: true
       responses:
         500:
-          description:  Error while creating the file
+          description: Error while sending the file
+

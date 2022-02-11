@@ -12,10 +12,10 @@ import zipfile
 from sys import platform
 
 # imports from other directories 
-from utils.utility import data_proccessing, clear_data
+from utils.utility import generate_df, clear_data
 from config import CONF
 
-class Genreate_doc:
+class DocumentOps:
   """
   This class Contains the operations to generate the documents 
   """
@@ -28,18 +28,18 @@ class Genreate_doc:
     self.pdfs = os.path.join(os.path.dirname(
                 self.template_doc), CONF['directory']['pdf'])
 
-  def data_procesing(self,path):
-    """
-    This method is used to fetch data 
-    """
-    try:
+  # def data_procesing(self,path):
+  #   """
+  #   This method is used to fetch data 
+  #   """
+  #   try:
       
-      data = pd.read_excel(path)
+  #     data = pd.read_excel(path)
 
-    except Exception as ex:
-      print("Error while processing the data {}".format(str(ex)))
-      data = None
-    return data
+  #   except Exception as ex:
+  #     print("Error while processing the data {}".format(str(ex)))
+  #     data = None
+  #   return data
 
 
   def generate_docs(self, row, docx, doc_name=None):
@@ -64,7 +64,7 @@ class Genreate_doc:
     """
     try:
       # creates word dcuments from dataframe
-      data_df = data_proccessing(data)
+      data_df = generate_df(data)
       if not os.path.exists(self.docs):
         os.mkdir(self.docs)
 
@@ -78,11 +78,28 @@ class Genreate_doc:
       zipped_file = self.zipdir(res_files)
       if zipped_file:
         print("zipped documents successfully")
-        return zipped_file
+        return  send_file(zipped_file, 
+                         mimetype="application/zip",
+                         attachment_filename=CONF['file_names']['zip'],
+                         as_attachment=True)
       raise Exception("Zipped file not found")
     except Exception as ex:
       print("Error while creating doc : {}".format(str(ex)))
       return "Error while creating the document"
+
+
+  # @staticmethod
+  # def generate_df(data):
+  #   try:
+  #     if isinstance(data, object):
+  #       res = data_proccessing(data)
+  #     else:
+  #       res = make_dataframe(data)
+  #   except Exception as ex:
+  #     print("Error while generating the dataframe :{}".format(str(ex)))
+  #     res = None
+  #   return res
+
 
 
   def generate_pdfs(self):

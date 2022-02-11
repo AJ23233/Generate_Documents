@@ -5,17 +5,27 @@
 import pandas as pd
 import os
 import shutil
+from Operations.Operation_manager import OperationManager
 
-def data_proccessing(path):
+def generate_df(data):
 	"""
-	This method is used to fetched data
+	This method is used to generate dataframe 
 	"""
 	try:
-	  data = pd.read_excel(path)
+		# import pdb; pdb.set_trace()
+		if not isinstance(data, str): 
+	  		df = pd.read_excel(data)
+		else:
+			import pdb; pdb.set_trace()
+			Ops_mng = OperationManager()
+			df_data = Ops_mng.execute_operation("database", "fetch_using_query",
+		                                 (data))
+			df = pd.DataFrame(df_data, df_data[0].keys())
+
 	except Exception as ex:
 	  print("Error while processing the data {}".format(str(ex)))
-	  data = None
-	return data
+	  df = None
+	return df
 
 
 def clear_data(path):
