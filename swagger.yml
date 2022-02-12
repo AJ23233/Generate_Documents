@@ -59,6 +59,12 @@ paths:
           type: file
           description: The Data to be used (.xslx file)
           required: true
+        - name: "file_format"
+          in: "query"
+          description: "Status values that need to be considered for filter"
+          required: true
+          type: "string"
+          enum: ["pdf", "word/docx"]
       responses:
         500:
           description: Error while sending the file
@@ -85,7 +91,12 @@ paths:
           type: string
           description: The Database query to be used
           required: true
+        - name: "file_format"
+          in: "query"
+          description: "Status values that need to be considered for filter"
+          required: true
+          type: "string"
+          enum: ["pdf", "word/docx"]
       responses:
         500:
           description: Error while sending the file
-

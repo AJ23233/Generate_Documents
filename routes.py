@@ -62,7 +62,7 @@ def create_doc():
 def query_doc():
     try:
         template = request.files['Template']
-        data = request.args['Data']
+        data = request.values['Data']
         res_format = request.form.get("format")
         response = Ops_mng.execute_operation("document", "Create_docs",
                                              (template, data, res_format))

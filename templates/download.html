@@ -70,4 +70,40 @@
     </div>
     </div>
   </form>
+
+
+  <form action="http://localhost:5000/v1/query-documents" method="POST" enctype="multipart/form-data" class="mb-3">
+    <div class="form-group text-center row">
+        <div class="col-sm-3"></div>
+
+        <div class="mb-3">
+          <label for="formFileMultiple" class="form-label">Upload Template : (.docx file) </label>
+          <input class="form-control" type="file" id="formFileMultiple" name="Template" multiple>
+        </div>&nbsp;&nbsp;&nbsp;
+        <div class="mb-3">
+          <label for="formFileMultiple" class="form-label">Database query :</label>
+          <input class="form-control" type="text" id="formFileMultiple" name="Data" multiple><br>
+
+        </div>
+      </div>
+
+        <div class="form-group text-center row">
+          <div class="col-sm-3"></div>
+
+          <div class="mb-3">
+              <label for="formatting" class="form-label">File format required </label>
+              <select for="formatting" name="format">
+                <option value="pdf" >Pdf</option>
+                <option value="word" >Word/docx</option>
+              </select>
+          </div>&nbsp;&nbsp;&nbsp;
+          <div class="mb-3"></div>
+                  
+          </div>
+        </div>
+    </div id="myBlueDiv">
+      <input type="submit" class="btn" name="Download" enctype="multipart/form-data" />
+    </div>
+    </div>
+  </form>
 </div>
