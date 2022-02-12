@@ -1,45 +1,12 @@
 import psycopg2
+from sqlalchemy import create_engine, pool
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.ext.declarative import declarative_base
+# from sqlalchemy import pool
+#from utils.configs import POOLSIZE
+# POOLSIZE=15
+
 from config import CONF, DB_NAME, DB_PORT, DB_HOST, DB_USER, DB_PASS, DB_URL
-from sqlalchemy import create_engine
-
-
-# def connect():
-#     """ Connect to the PostgreSQL database server """
-#     conn = None
-#     try:
-#         # read connection parameters
-#         params = config()
-
-#         # connect to the PostgreSQL server
-#         print('Connecting to the PostgreSQL database...')
-#         conn = psycopg2.connect(
-#                                 database=DB_NAME,
-#                                 user=DB_USER,
-#                                 password=DB_PASS,
-#                                 host=DB_HOST,
-#                                 port=DB_PORT
-#                                     )
-
-		
-#         # create a cursor
-#         cur = conn.cursor()
-        
-# 	# execute a statement
-#         print('PostgreSQL database version:')
-#         cur.execute('SELECT version()')
-
-#         # display the PostgreSQL database server version
-#         db_version = cur.fetchone()
-#         print(db_version)
-       
-# 	# close the communication with the PostgreSQL
-#         cur.close()
-#     except (Exception, psycopg2.DatabaseError) as error:
-#         print(error)
-#     finally:
-#         if conn is not None:
-#             conn.close()
-#             print('Database connection closed.')
 
 
 class DatabaseConnection(object):
@@ -62,19 +29,31 @@ class DatabaseConnection(object):
         
         return eng.connect()
 
-# >>> abc.execute("select * from employee_data")
 
+class SQLAlchemyDB(object):
 
-# def db_connection():
-#     # this method connects with databas
+    def __init__(self):
 
-#     print('Connecting to the PostgreSQL database...')
-#     conn = psycopg2.connect(
-#                             database=DB_NAME,
-#                             user=DB_USER,
-#                             password=DB_PASS,
-#                             host=DB_HOST,
-#                             port=DB_PORT
-#                       0      )
-#     pool.
-    
+        self.connection = None
+        self.session = None
+        mypool = pool.QueuePool(self.db_conn, pool_size=15)
+        self.engine = create_engine('postgresql://', pool=mypool)
+
+    def __enter__(self):
+
+        session_maker = sessionmaker()
+        self.connection = self.engine.connect()
+        self.session = session_maker(bind=self.connection)
+
+    def __exit__(self,*_):
+
+        self.session.close()
+        self.connection.close()
+
+    def db_conn():
+        conn = psycopg2.connect(database='doc_gen',
+                                user='python',
+                                host='localhost',
+                                password='python',
+                                port=5432)
+        return conn

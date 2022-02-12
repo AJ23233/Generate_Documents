@@ -13,7 +13,7 @@ DB_PORT = environ.get('DB_PORT')
 DB_HOST = environ.get('DB_HOST')
 DB_USER = environ.get('DB_USER')
 DB_PASS = environ.get('DB_PASS')
-DB_TYPE='postgresql'
+DB_TYPE= environ.get('DB_TYPE') or 'postgresql'
 
 DB_URL = f"{DB_TYPE}://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}" 
 

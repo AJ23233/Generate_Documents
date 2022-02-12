@@ -64,9 +64,6 @@ def query_doc():
         res_format = request.form.get("format")
         response = Ops_mng.execute_operation("document", "Create_docs",
                                              (template, data, res_format))
-
-        if 'Error' in response:
-            raise Exception(response)
         return response
     except Exception as ex:
         print("Error while creating query documents is : {}".format(str(ex)))

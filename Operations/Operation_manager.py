@@ -14,7 +14,7 @@ class OperationManager:
 		Method to manage all the operations that needs to be performed 
 		"""
 		try:
-			import pdb; pdb.set_trace
+
 			op = ops_name +'_ops'
 			cls = getattr(import_module(".".join(["Operations",op])),
 										"".join([o.capitalize() for o in op.split("_")]))

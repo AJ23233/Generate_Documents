@@ -16,11 +16,10 @@ def generate_df(data):
 		if not isinstance(data, str): 
 	  		df = pd.read_excel(data)
 		else:
-			import pdb; pdb.set_trace()
 			Ops_mng = OperationManager()
 			df_data = Ops_mng.execute_operation("database", "fetch_using_query",
 		                                 (data))
-			df = pd.DataFrame(df_data, df_data[0].keys())
+			df = pd.DataFrame(df_data, columns=df_data[0].keys())
 
 	except Exception as ex:
 	  print("Error while processing the data {}".format(str(ex)))

@@ -12,12 +12,10 @@ class DatabaseOps:
 		pass
 
 	def fetch_using_query(self, query):
+		# Method to fetch data using query
 		try:
-			# Method to fetch data using query
-			import pdb; pdb.set_trace()
 			with DatabaseConnection() as db_obj:
 				res = db_obj.execute(text(str(query))).all()
-				# import pdb; pdb.set_trace()
 				return res
 		except Exception as ex:
 			print("Error while fetching data using query is :{}".format(str(ex)))
