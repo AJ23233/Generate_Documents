@@ -54,6 +54,8 @@ def create_doc():
     except Exception as ex:
         print("Error while creating documents is : {}".format(str(ex)))
         return "Error while creating documents"
+    finally:
+        Ops_mng.execute_operation("document", "remove_docs")
 
 
 @APP.route("/v1/query-documents", methods=['POST', 'GET'])
@@ -68,3 +70,5 @@ def query_doc():
     except Exception as ex:
         print("Error while creating query documents is : {}".format(str(ex)))
         return "Error while creating documents using query"
+    finally:
+        Ops_mng.execute_operation("document", "remove_docs")
