@@ -14,6 +14,7 @@ from sys import platform
 # imports from other directories 
 from utils.utility import generate_df, clear_data
 from config import CONF
+import time
 
 class DocumentOps:
   """
@@ -27,20 +28,6 @@ class DocumentOps:
                 self.template_doc), CONF['directory']['doc'])
     self.pdfs = os.path.join(os.path.dirname(
                 self.template_doc), CONF['directory']['pdf'])
-
-  # def data_procesing(self,path):
-  #   """
-  #   This method is used to fetch data 
-  #   """
-  #   try:
-      
-  #     data = pd.read_excel(path)
-
-  #   except Exception as ex:
-  #     print("Error while processing the data {}".format(str(ex)))
-  #     data = None
-  #   return data
-
 
   def generate_docs(self, row, docx, doc_name=None):
     """
@@ -65,6 +52,7 @@ class DocumentOps:
     try:
       # creates word dcuments from dataframe
       data_df = generate_df(data)
+
       if not os.path.exists(self.docs):
         os.mkdir(self.docs)
 
@@ -88,20 +76,6 @@ class DocumentOps:
       return "Error while creating the document"
 
 
-  # @staticmethod
-  # def generate_df(data):
-  #   try:
-  #     if isinstance(data, object):
-  #       res = data_proccessing(data)
-  #     else:
-  #       res = make_dataframe(data)
-  #   except Exception as ex:
-  #     print("Error while generating the dataframe :{}".format(str(ex)))
-  #     res = None
-  #   return res
-
-
-
   def generate_pdfs(self):
     """
     Method to create .pdf documents from .docx
@@ -111,7 +85,8 @@ class DocumentOps:
         os.mkdir(self.pdfs)
 
       if platform == 'linux':
-        os.system(f"libreoffice --headless --convert-to pdf {self.docs}/*.docx --outdir {os.path.relpath(self.pdfs)}")
+        os.system(f"libreoffice --headless --convert-to pdf {CONF['directory']['doc']}/*.docx --outdir {CONF['directory']['pdf']}")
+        time.sleep(1)
       else:
         os.system(f"docx2pdf {self.docs} {self.pdfs}")
 
@@ -131,6 +106,10 @@ class DocumentOps:
         for root, dirs, files in os.walk(path):
           for file in files:
               ziph.write(os.path.relpath(os.path.join(root, file)))
+      if int(os.path.getsize(CONF['file_names']['zip'])) <= 22:
+        time.sleep(5)
+        self.zipdir(path)
+        print("zip file is empty hence creating again")
     except Exception as ex:
       print("Error while zipping the files : {}".format(str(ex)))
       res = None

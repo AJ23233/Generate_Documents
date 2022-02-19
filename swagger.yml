@@ -67,7 +67,7 @@ paths:
           enum: ["pdf", "word/docx"]
       responses:
         500:
-          description: Error while sending the file
+          description: Error while creating the documents
 
   /v1/query-documents:
     post:
@@ -99,4 +99,32 @@ paths:
           enum: ["pdf", "word/docx"]
       responses:
         500:
-          description: Error while sending the file
+          description: Error while creating the documents
+
+  /v1/employee_documents:
+    post:
+      tags:
+        - "Employee Documents"
+      summary: "Generates employee documents"
+      description: "This Api is used to create the Employee Documents directly"
+      operationId: "routes.emp_docs"
+      consumes:
+        - "multipart/form-data"    
+      produces:
+        - "application/zip"
+      parameters:
+        - in: formData
+          name: Template
+          type: file
+          description: The template to upload (.docx file)
+          required: true
+        - name: "file_format"
+          in: "query"
+          description: "Status values that need to be considered for filter"
+          required: true
+          type: "string"
+          enum: ["pdf", "word/docx"]
+          default: "pdf"
+      responses:
+        500:
+          description: Error while creating the documents

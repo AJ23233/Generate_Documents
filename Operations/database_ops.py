@@ -7,6 +7,9 @@ from sqlalchemy import create_engine, text
 from utils.db_connection import DatabaseConnection
 
 class DatabaseOps:
+	"""
+	This class contains all the opetrations needs to be performed on/using database
+	"""
 
 	def __init__(self):
 		pass

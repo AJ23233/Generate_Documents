@@ -72,3 +72,19 @@ def query_doc():
         return "Error while creating documents using query"
     finally:
         Ops_mng.execute_operation("document", "remove_docs")
+
+
+@APP.route("/v1/employee_documents", methods=['POST', 'GET'])
+def emp_docs():
+    try:
+        template = request.files['Template']
+        data = {"method": "fetch_employee_data"}
+        res_format = request.form.get("format")
+        response = Ops_mng.execute_operation("document", "Create_docs",
+                                             (template, data, res_format))
+        return response
+    except Exception as ex:
+        print("Error while creating employee docs is : {}".format(str(ex)))
+        return "Error while creating employee documents"
+    finally:
+        Ops_mng.execute_operation("document", "remove_docs")
