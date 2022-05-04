@@ -14,9 +14,9 @@ i.e. The user can create documents in bulk as per requirements
 
 > Framework : Flask
 
-> Storage : File storage ( Can be switched to database with modifications )
+> Storage : PostgreSQL, File storage (.xlsx)
 
-> Python Packages used : flask, connexion, pandas, docxtpl, docx2pdf, zipfile
+> Python Packages used : SQLAlchemy, Connexion, Pandas, Docxtpl, Docx2pdf, Zipfile, Swagger
 
 <br>
 Here are the some steps for user to follow :
