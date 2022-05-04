@@ -8,7 +8,7 @@ i.e. The user can create documents in bulk as per requirements
 > OS should be Windows having Python3 installed
 
 ## Tech stack :
-> OS used : Windows
+> OS used : Linux (Ubuntu) | Windows
 
 > Programming Language : Python3
 
@@ -27,7 +27,7 @@ Here are the some steps for user to follow :
 4. upload the template and data to download the documents 
 
 <br>
-Just like we know **"Every coin has 2 sides"** this project also has some advantages and disadvantages which are also highlighted below 
+Just like we know **"Every coin has 2 sides"** this project also has some advantages and disadvantages which are highlighted below 
 
 ### Advantages :
 
@@ -39,6 +39,5 @@ Just like we know **"Every coin has 2 sides"** this project also has some advant
 
 ### Disadvantages :
 
-1. Does not handle missing data as it focuses only on document creation 
-2. requires windows operating system
+1. Does not handle missing data as it focuses only on document creation only
 3. User needs to create his customized template 
